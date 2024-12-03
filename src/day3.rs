@@ -44,7 +44,7 @@ fn tokens(st: String) -> Vec<Expression> {
         if toggle && starts_with(st, i, "mul(") {
             i += 4;
             let mut start = i;
-            while st[start].is_digit(10) {
+            while st[start].is_ascii_digit() {
                 start += 1;
             }
             digits.push(st[i..start].iter().collect());
@@ -55,7 +55,7 @@ fn tokens(st: String) -> Vec<Expression> {
             } else {
                 i += 1;
                 let mut start = i;
-                while st[start].is_digit(10) {
+                while st[start].is_ascii_digit() {
                     start += 1;
                 }
                 digits.push(st[i..start].iter().collect());
