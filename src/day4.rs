@@ -20,7 +20,67 @@ const MOVES: [(i32, i32); 8] = [
     (1, -1),
 ];
 
+const LR_MOVES: [(i32, i32); 2] = [(1, 1), (-1, -1)];
+
+const RL_MOVES: [(i32, i32); 2] = [(-1, 1), (1, -1)];
+
 fn word_search(words: Vec<Vec<char>>) -> u64 {
+    let rows = words.len();
+    let cols = words[0].len();
+    let mut count = 0;
+
+    for x in 0..rows {
+        for y in 0..cols {
+            if words[x][y] == 'A' {
+                count += search_in_directions(&words, x as i32, y as i32);
+            }
+        }
+    }
+
+    count
+}
+
+fn search_in_directions(words: &Vec<Vec<char>>, x: i32, y: i32) -> u64 {
+    let mut target: HashSet<char> = HashSet::new();
+    target.insert('M');
+    target.insert('S');
+    // left to right diag
+    for (nx, ny) in LR_MOVES {
+        let nx = x + nx;
+        let ny = y + ny;
+        if nx < 0 || ny < 0 || nx >= words.len() as i32 || ny >= words[0].len() as i32 {
+            return 0;
+        }
+        let ch = words[nx as usize][ny as usize];
+        if !target.contains(&ch) {
+            return 0;
+        }
+
+        target.remove(&ch);
+    }
+    assert!(target.len() == 0);
+    target.insert('M');
+    target.insert('S');
+    // right to left diag
+    for (nx, ny) in RL_MOVES {
+        let nx = x + nx;
+        let ny = y + ny;
+        if nx < 0 || ny < 0 || nx >= words.len() as i32 || ny >= words[0].len() as i32 {
+            return 0;
+        }
+        let ch = words[nx as usize][ny as usize];
+        if !target.contains(&ch) {
+            return 0;
+        }
+
+        target.remove(&ch);
+    }
+    assert!(target.len() == 0);
+
+    1
+}
+
+fn word_search_p1(words: Vec<Vec<char>>) -> u64 {
     let rows = words.len();
     let cols = words[0].len();
     let mut count = 0;
@@ -58,7 +118,6 @@ fn search_in_direction(words: &Vec<Vec<char>>, x: i32, y: i32, dx: i32, dy: i32)
 
     1
 }
-
 pub fn read_input_to_grid() -> Result<Vec<Vec<char>>, io::Error> {
     let file_path = "inputs/input_d4.txt";
     let file = File::open(file_path)?;
@@ -77,13 +136,13 @@ pub fn read_input_to_grid() -> Result<Vec<Vec<char>>, io::Error> {
 
 #[cfg(test)]
 mod tests {
-    use crate::day4::{read_input_to_grid, word_search};
+    use crate::day4::{read_input_to_grid, word_search, word_search_p1};
 
     #[test]
     fn test_example() {
         let words = vec![vec!['X', 'M', 'A', 'S']];
 
-        assert_eq!(word_search(words), 1);
+        assert_eq!(word_search_p1(words), 1);
     }
 
     #[test]
@@ -100,11 +159,29 @@ mod tests {
             vec!['M', 'A', 'M', 'M', 'M', 'X', 'M', 'M', 'M', 'M'],
             vec!['M', 'X', 'M', 'X', 'A', 'X', 'M', 'A', 'S', 'X'],
         ];
-        assert_eq!(word_search(words), 18);
+        assert_eq!(word_search_p1(words), 18);
     }
 
     #[test]
     fn test_p1() {
+        let words = read_input_to_grid().expect("parse error");
+        println!("Words: {:?}", words);
+        println!("Result: {}", word_search_p1(words));
+    }
+
+    #[test]
+    fn test_example_p2() {
+        let words = vec![
+            vec!['M', '.', 'S'],
+            vec!['M', 'A', 'S'],
+            vec!['M', '.', 'S'],
+        ];
+
+        assert_eq!(word_search(words), 1);
+    }
+
+    #[test]
+    fn test_p2() {
         let words = read_input_to_grid().expect("parse error");
         println!("Words: {:?}", words);
         println!("Result: {}", word_search(words));
