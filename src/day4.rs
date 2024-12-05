@@ -58,7 +58,7 @@ fn search_in_directions(words: &Vec<Vec<char>>, x: i32, y: i32) -> u64 {
 
         target.remove(&ch);
     }
-    assert!(target.len() == 0);
+    assert!(target.is_empty());
     target.insert('M');
     target.insert('S');
     // right to left diag
@@ -75,7 +75,7 @@ fn search_in_directions(words: &Vec<Vec<char>>, x: i32, y: i32) -> u64 {
 
         target.remove(&ch);
     }
-    assert!(target.len() == 0);
+    assert!(target.is_empty());
 
     1
 }
