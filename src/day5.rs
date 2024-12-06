@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 #![allow(dead_code)]
 use std::collections::{HashMap, HashSet};
 use std::fs::File;
@@ -55,16 +54,51 @@ fn middle_page(ordering: &Vec<usize>) -> usize {
     ordering[middle]
 }
 
-fn print_queue(input: Input) -> usize {
+fn print_queue(input: &mut Input) -> usize {
     input
         .inputs
-        .iter()
-        .filter(|ordering| correct_ordering(ordering, &input.rules))
-        .map(middle_page)
+        .iter_mut()
+        .map(|ordering| {
+            if correct_ordering_mut(ordering, &input.rules) {
+                return middle_page(ordering);
+            }
+            0
+        })
         .sum()
 }
 
-fn correct_ordering(ordering: &Vec<usize>, rules: &Rules) -> bool {
+fn correct_ordering_mut(ordering: &mut Vec<usize>, rules: &Rules) -> bool {
+    let mut changed = false;
+
+    loop {
+        let mut made_swap = false;
+        let mut seen = HashMap::new();
+
+        for (i, &page) in ordering.iter().enumerate() {
+            if let Some(page_order) = rules.get(&page) {
+                if let Some(&conflicting_page) =
+                    page_order.iter().find(|&&ord| seen.contains_key(&ord))
+                {
+                    let j = seen[&conflicting_page];
+                    ordering.swap(i, j);
+                    made_swap = true;
+                    break;
+                }
+            }
+            seen.insert(page, i);
+        }
+
+        if made_swap {
+            changed = true;
+        } else {
+            break;
+        }
+    }
+
+    changed
+}
+
+fn correct_ordering(ordering: &mut Vec<usize>, rules: &Rules) -> bool {
     let mut seen: HashSet<usize> = HashSet::new();
 
     for page in ordering.iter() {
@@ -88,12 +122,12 @@ mod tests {
 
     #[test]
     fn test_example() {
-        let out = read_input("inputs/input_example_d5.txt").expect("failed to read input");
+        let mut out = read_input("inputs/input_example_d5.txt").expect("failed to read input");
 
         println!("Out: {out:?}");
 
-        let res = print_queue(out);
-        assert_eq!(res, 143);
+        let res = print_queue(&mut out);
+        assert_eq!(res, 123);
     }
 
     #[test]
@@ -103,7 +137,7 @@ mod tests {
 
     #[test]
     fn test_all_true_print_queue() {
-        let out = Input {
+        let mut out = Input {
             rules: HashMap::new(),
             inputs: vec![
                 vec![75, 47, 61, 53, 29],
@@ -112,25 +146,24 @@ mod tests {
             ],
         };
 
-        let res = print_queue(out);
+        let res = print_queue(&mut out);
         assert!(res == 143);
     }
     #[test]
     fn test_correct_ordering() {
         let mut rules = HashMap::new();
         rules.insert(97, vec![75]);
-        assert_eq!(correct_ordering(&vec![75, 97, 47, 61, 53], &rules), false);
+        assert_eq!(
+            correct_ordering(&mut vec![75, 97, 47, 61, 53], &rules),
+            false
+        );
     }
 
     #[test]
     fn test_example_p1() {
-        let out = read_input("inputs/input_d5.txt").expect("failed to read input");
+        let mut out = read_input("inputs/input_d5.txt").expect("failed to read input");
 
-        let res = print_queue(out);
+        let res = print_queue(&mut out);
         println!("Res: {res}");
-        // assert_eq!(res, 143);
     }
-
-    #[test]
-    fn test_p2() {}
 }
