@@ -87,7 +87,7 @@ fn count_safe(reports: Vec<Vec<i64>>) -> i64 {
     safe_counts
 }
 
-pub fn input_to_vec() -> Result<Vec<Vec<i64>>, io::Error> {
+fn input_to_vec() -> Result<Vec<Vec<i64>>, io::Error> {
     let file_path = "inputs/input_d2.txt";
 
     let file = File::open(file_path)?;

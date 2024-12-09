@@ -85,7 +85,7 @@ fn tokens(st: String) -> Vec<Expression> {
     tokens
 }
 
-pub fn input_to_string() -> Result<String, io::Error> {
+fn input_to_string() -> Result<String, io::Error> {
     let file_path = "inputs/input_d3.txt";
     fs::read_to_string(file_path)
 }

@@ -4,7 +4,7 @@ use std::{
     io::{self, BufRead},
 };
 
-pub fn input_to_vec() -> Result<(Vec<usize>, Vec<usize>), io::Error> {
+fn input_to_vec() -> Result<(Vec<usize>, Vec<usize>), io::Error> {
     let file_path = "inputs/input_d1.txt";
 
     let file = File::open(file_path)?;
@@ -27,7 +27,7 @@ pub fn input_to_vec() -> Result<(Vec<usize>, Vec<usize>), io::Error> {
     Ok((column1, column2))
 }
 
-pub fn find_distances(mut l1: Vec<usize>, mut l2: Vec<usize>) -> usize {
+fn find_distances(mut l1: Vec<usize>, mut l2: Vec<usize>) -> usize {
     l1.sort();
     l2.sort();
 

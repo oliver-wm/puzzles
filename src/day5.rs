@@ -153,9 +153,8 @@ mod tests {
     fn test_correct_ordering() {
         let mut rules = HashMap::new();
         rules.insert(97, vec![75]);
-        assert_eq!(
-            correct_ordering(&mut vec![75, 97, 47, 61, 53], &rules),
-            false
+        assert!(
+            !correct_ordering(&mut vec![75, 97, 47, 61, 53], &rules)
         );
     }
 

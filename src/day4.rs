@@ -118,7 +118,7 @@ fn search_in_direction(words: &Vec<Vec<char>>, x: i32, y: i32, dx: i32, dy: i32)
 
     1
 }
-pub fn read_input_to_grid() -> Result<Vec<Vec<char>>, io::Error> {
+fn read_input_to_grid() -> Result<Vec<Vec<char>>, io::Error> {
     let file_path = "inputs/input_d4.txt";
     let file = File::open(file_path)?;
     let reader = BufReader::new(file);
