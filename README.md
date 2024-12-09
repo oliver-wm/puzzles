@@ -1,1 +1,3 @@
-Advent of Code 2024, with Rust!
+# Puzzles Repo
+
+* Advent of Code 2024, with Rust!
