@@ -51,8 +51,7 @@ fn free_space(block: Vec<String>) -> Vec<String> {
     }
     res.extend(
         (0..(block.len() - res.len()))
-            .map(|_| ".".to_string())
-            .into_iter(),
+            .map(|_| ".".to_string()),
     );
     res
 }
@@ -157,11 +156,6 @@ fn p2(fs: &str) -> usize {
 
 #[cfg(test)]
 mod tests {
-
-    use std::{
-        fs::File,
-        io::{BufRead, BufReader},
-    };
 
     use crate::day9::*;
 

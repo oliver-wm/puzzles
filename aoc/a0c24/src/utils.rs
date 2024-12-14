@@ -48,10 +48,10 @@ mod tests {
         let p2 = Point { x: 1, y: 4 };
         let p3 = Point { x: 1, y: 5 };
 
-        assert_eq!(Point::collinear(p1, p2, p3), true);
-        assert_eq!(Point::collinear(p2, p1, p3), true);
-        assert_eq!(Point::collinear(p3, p2, p1), true);
-        assert_eq!(Point::collinear(p2, p3, p1), true);
-        assert_eq!(Point::collinear(p3, p1, p2), true);
+        assert!(Point::collinear(p1, p2, p3));
+        assert!(Point::collinear(p2, p1, p3));
+        assert!(Point::collinear(p3, p2, p1));
+        assert!(Point::collinear(p2, p3, p1));
+        assert!(Point::collinear(p3, p1, p2));
     }
 }

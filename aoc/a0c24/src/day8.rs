@@ -136,7 +136,7 @@ fn process_antinode(
     all_pts: bool,
 ) {
     if let Some((px, py)) = get_coords(antenna, dx, dy) {
-        if let Some(_) = get_char_from_pos_grid(px, py, grid) {
+        if get_char_from_pos_grid(px, py, grid).is_some() {
             let p3 = Point::from(&(px, py));
             if Point::collinear(p1, p2, p3) {
                 antinode_positions.insert((px, py));
@@ -161,7 +161,7 @@ fn find_collinear_points(
 
     loop {
         if let Some((nx, ny)) = get_coords(&current, dx, dy) {
-            if let Some(_) = get_char_from_pos_grid(nx, ny, grid) {
+            if get_char_from_pos_grid(nx, ny, grid).is_some() {
                 let p3 = Point::from(&(nx, ny));
                 if Point::collinear(p1, p2, p3) {
                     antinode_positions.insert((nx, ny));
@@ -338,7 +338,7 @@ mod tests {
 
         let mut c = 0;
         for (k, v) in antennas.iter() {
-            let res = find_antinodes(&grid, &v, true);
+            let res = find_antinodes(&grid, v, true);
             c += res.len();
             for (x, y) in res.iter() {
                 if get_char_from_pos_grid(*x, *y, &grid) == Some('.') {
@@ -351,7 +351,7 @@ mod tests {
             for c in g.iter() {
                 print!("{c}");
             }
-            println!("");
+            println!();
         }
         let antennas: HashSet<_> = antennas.values().flat_map(|v| v.iter().cloned()).collect();
 

@@ -103,10 +103,8 @@ impl ENode {
     fn eval_inner(&self, result: &mut usize, acc: usize, eqn_val: usize) {
         let mul_val = acc * self.val;
         let add_val = acc + self.val;
-        if self.next_add.is_none() && self.next_mul.is_none() {
-            if add_val == eqn_val || mul_val == eqn_val {
-                *result += 1;
-            }
+        if self.next_add.is_none() && self.next_mul.is_none() && (add_val == eqn_val || mul_val == eqn_val) {
+            *result += 1;
         }
 
         if let Some(add_next) = self.next_add.as_ref() {
@@ -125,10 +123,8 @@ impl ENode {
         let mul_val = acc * self.val;
         let add_val = acc + self.val;
         let concat_val = concat(acc, self.val);
-        if self.next_add.is_none() && self.next_mul.is_none() {
-            if add_val == eqn_val || mul_val == eqn_val || concat_val == eqn_val {
-                *result += 1;
-            }
+        if self.next_add.is_none() && self.next_mul.is_none() && (add_val == eqn_val || mul_val == eqn_val || concat_val == eqn_val) {
+            *result += 1;
         }
         if let Some(add_next) = self.next_add.as_ref() {
             add_next.eval_inner_concat(result, add_val, eqn_val);
