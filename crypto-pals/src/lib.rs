@@ -4,7 +4,7 @@ use std::cmp::Eq;
 use std::collections::HashMap;
 use std::hash::Hash;
 
-fn frequency_count<'a, T>(items: &'a [T]) -> HashMap<&'a T, usize>
+fn frequency_count<T>(items: &[T]) -> HashMap<&T, usize>
 where
     T: Eq + Hash,
 {
